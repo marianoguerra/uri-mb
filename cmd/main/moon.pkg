@@ -1,0 +1,5 @@
+import {
+  "marianoguerra/uri",
+}
+
+pkgtype(kind: "executable")

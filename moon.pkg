@@ -1,0 +1,10 @@
+import {
+  "marianoguerra/uri/enc",
+}
+
+import {
+  "marianoguerra/uri/enc",
+  "moonbitlang/core/random",
+} for "test"
+
+warnings = "-5-53"

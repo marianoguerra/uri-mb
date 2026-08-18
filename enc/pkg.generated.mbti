@@ -1,0 +1,132 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "marianoguerra/uri/enc"
+
+// Values
+pub let table_alpha : Table
+
+pub let table_data : Table
+
+pub let table_digit : Table
+
+pub let table_fragment : Table
+
+pub let table_gen_delims : Table
+
+pub let table_hexdig : Table
+
+pub let table_idata : Table
+
+pub let table_ifragment : Table
+
+pub let table_ipath : Table
+
+pub let table_ipv_future : Table
+
+pub let table_iquery : Table
+
+pub let table_ireg_name : Table
+
+pub let table_isegment_nz_nc : Table
+
+pub let table_iuserinfo : Table
+
+pub let table_path : Table
+
+pub let table_pchar : Table
+
+pub let table_query : Table
+
+pub let table_reg_name : Table
+
+pub let table_reserved : Table
+
+pub let table_scheme : Table
+
+pub let table_segment_nz_nc : Table
+
+pub let table_sub_delims : Table
+
+pub let table_unreserved : Table
+
+pub let table_userinfo : Table
+
+// Errors
+
+// Types and methods
+pub enum Data {
+}
+pub impl Encoder for Data
+
+pub enum Fragment {
+}
+pub impl Encoder for Fragment
+
+pub enum IData {
+}
+pub impl Encoder for IData
+
+pub enum IFragment {
+}
+pub impl Encoder for IFragment
+
+pub enum IPath {
+}
+pub impl Encoder for IPath
+pub impl PathEncoder for IPath
+
+pub enum IQuery {
+}
+pub impl Encoder for IQuery
+
+pub enum IRegName {
+}
+pub impl Encoder for IRegName
+
+pub enum IUserinfo {
+}
+pub impl Encoder for IUserinfo
+
+pub enum Path {
+}
+pub impl Encoder for Path
+pub impl PathEncoder for Path
+
+pub enum Port {
+}
+pub impl Encoder for Port
+
+pub enum Query {
+}
+pub impl Encoder for Query
+
+pub enum RegName {
+}
+pub impl Encoder for RegName
+
+pub struct Table(UInt64, UInt64) derive(Eq)
+pub fn Table::allows(Self, Char) -> Bool
+pub fn Table::allows_ascii(Self, Int) -> Bool
+pub fn Table::allows_code_point(Self, Int) -> Bool
+pub fn Table::allows_non_ascii(Self) -> Bool
+pub fn Table::allows_pct_encoded(Self) -> Bool
+pub fn Table::is_subset(Self, Self) -> Bool
+pub fn Table::new(String) -> Self
+pub fn Table::or(Self, Self) -> Self
+pub fn Table::or_iprivate(Self) -> Self
+pub fn Table::or_pct_encoded(Self) -> Self
+pub fn Table::or_ucschar(Self) -> Self
+pub fn Table::sub(Self, Self) -> Self
+
+pub enum Userinfo {
+}
+pub impl Encoder for Userinfo
+
+// Type aliases
+
+// Traits
+pub trait Encoder {
+  fn table() -> Table
+}
+
+pub trait PathEncoder : Encoder {
+}

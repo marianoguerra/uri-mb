@@ -1,0 +1,16 @@
+[package]
+name = "fluent-uri-oracle"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+# The port targets the current development revision of `fluent-uri`, which is
+# 40 commits ahead of the released 0.4.1 and contains a rewritten parser.
+fluent-uri = { git = "https://github.com/yescallop/fluent-uri-rs", rev = "76e10ae", features = [
+  "net",
+] }
+
+[[bin]]
+name = "oracle"
+path = "src/main.rs"
