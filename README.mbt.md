@@ -13,6 +13,23 @@ generated conformance test suite keeps the two in step; see
 [RFC 3987]: https://datatracker.ietf.org/doc/html/rfc3987
 [`fluent-uri`]: https://crates.io/crates/fluent-uri
 
+## Installation
+
+    moon add marianoguerra/uri
+
+Then import the package in the `moon.pkg` of the package that uses it:
+
+```
+import {
+  "marianoguerra/uri",
+  // Only needed to name an encoder or a table, see Packages below.
+  "marianoguerra/uri/enc",
+}
+```
+
+Every backend is supported: the test suite runs on `wasm`, `wasm-gc`, `js` and
+`native`.
+
 ## Terminology
 
 A *URI reference* is either a *URI* or a *relative reference*. If it starts
@@ -352,6 +369,8 @@ much larger suite with a fresh seed, run it, and throw it away:
 
 ## License
 
-This package is licensed under the Apache License 2.0. It is a derivative work
-of [`fluent-uri`](https://github.com/yescallop/fluent-uri-rs), copyright (c)
-2024 Scallop Ye, which is licensed under the MIT license.
+This package is licensed under the Apache License 2.0, see [LICENSE](LICENSE).
+
+It is a derivative work of [`fluent-uri`](https://github.com/yescallop/fluent-uri-rs),
+copyright (c) 2024 Scallop Ye, which is licensed under the MIT license; that
+license is reproduced in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
