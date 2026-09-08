@@ -60,7 +60,7 @@ fn ascii_lowercase(s : String) -> String {
   if !needed {
     return s
   }
-  let sb = StringBuilder::new(size_hint=s.length())
+  let sb = StringBuilder(size_hint=s.length())
   for ch in s {
     if ch >= 'A' && ch <= 'Z' {
       sb.write_char((ch.to_int() + 32).to_char().unwrap())
@@ -111,7 +111,7 @@ fn utf8_char_width(x : Int) -> Int {
 ///|
 /// Decodes a byte range known to be well-formed UTF-8 into a string.
 fn utf8_decode_valid(b : ArrayView[Byte], start : Int, end : Int) -> String {
-  let sb = StringBuilder::new(size_hint=end - start)
+  let sb = StringBuilder(size_hint=end - start)
   let mut i = start
   while i < end {
     let x = b[i].to_int()

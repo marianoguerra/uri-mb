@@ -27,7 +27,7 @@ fn[R] dump_host(host : @uri.Host[R]) -> String {
 ///|
 /// Renders the components of a parsed reference.
 fn dump_iri_ref(r : @uri.IriRef) -> String {
-  let sb = StringBuilder::new()
+  let sb = StringBuilder()
   sb.write_string("s=\{dump_opt(r.scheme.map(s => s.as_str()))}")
   match r.authority {
     None => sb.write_string("|a=-")

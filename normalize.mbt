@@ -38,7 +38,7 @@ fn normalize_estr(
   to_ascii_lowercase : Bool,
   table : @enc.Table,
 ) -> String {
-  let sb = StringBuilder::new(size_hint=s.length())
+  let sb = StringBuilder(size_hint=s.length())
   if table.allows_non_ascii() {
     decode_walk(
       s,
@@ -135,7 +135,7 @@ fn normalize_ri(
         }
         _ => None
       }
-      Some({ userinfo, host, host_parsed, port })
+      Some({ userinfo, host, host_parsed, port, })
     }
   }
   let (path, underflow) = if r.scheme is Some(_) && r.path.has_prefix("/") {

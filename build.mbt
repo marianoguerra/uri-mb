@@ -70,7 +70,7 @@ pub fn[U, R] Authority::make(
     }
     IpvFuture => abort("cannot build an authority with an IPvFuture host")
   }
-  { userinfo, host: text, host_parsed: parsed.cast(), port }
+  { userinfo, host: text, host_parsed: parsed.cast(), port, }
 }
 
 ///|

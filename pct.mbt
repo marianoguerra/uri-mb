@@ -39,7 +39,7 @@ fn decode_octet(hi : Int, lo : Int) -> Int {
 ///|
 /// Percent-encodes a single octet, e.g. `0x2f` to `"%2F"`.
 fn encode_byte(x : Int) -> String {
-  let sb = StringBuilder::new(size_hint=3)
+  let sb = StringBuilder(size_hint=3)
   sb.write_char('%')
   sb.write_char(hex_digits.get_char((x >> 4) & 0xf).unwrap())
   sb.write_char(hex_digits.get_char(x & 0xf).unwrap())

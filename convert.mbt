@@ -138,7 +138,7 @@ pub fn IriRef::as_iri(self : IriRef) -> Iri raise ConvertError {
 /// Percent-encodes the non-ASCII characters of `s`.
 fn encode_non_ascii_str(s : String) -> String {
   guard first_non_ascii(s) is Some(_) else { return s }
-  let sb = StringBuilder::new(size_hint=s.length() * 2)
+  let sb = StringBuilder(size_hint=s.length() * 2)
   let scratch : Array[Byte] = []
   let len = s.length()
   let mut i = 0
@@ -175,7 +175,7 @@ fn encode_non_ascii(r : Ri) -> Ri {
         }
         other => (auth.host, other)
       }
-      Some({ userinfo, host, host_parsed, port: auth.port })
+      Some({ userinfo, host, host_parsed, port: auth.port, })
     }
   }
   ri(

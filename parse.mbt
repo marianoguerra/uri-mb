@@ -473,7 +473,7 @@ fn Parser::parse_from_authority(self : Parser) -> Unit raise ParseError {
   // a reg-name or IPv4address can also be part of userinfo.
   let host_start = self.pos
   let host_meta = self.read_host()
-  let mut auth_meta = { host_start, host_end: self.pos, host_meta }
+  let mut auth_meta = { host_start, host_end: self.pos, host_meta, }
   self.read_port()
   if host_meta is (HIpv4(_) | HRegName) {
     let userinfo_read = self.select_read(
@@ -484,7 +484,7 @@ fn Parser::parse_from_authority(self : Parser) -> Unit raise ParseError {
       self.skip(1)
       let host_start = self.pos
       let host_meta = self.read_host()
-      auth_meta = { host_start, host_end: self.pos, host_meta }
+      auth_meta = { host_start, host_end: self.pos, host_meta, }
       self.read_port()
     } else if userinfo_read {
       raise UnexpectedCharOrEnd(index=self.pos)

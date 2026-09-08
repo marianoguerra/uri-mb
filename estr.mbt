@@ -43,13 +43,13 @@ pub struct EStr[E] {
 ///|
 /// Wraps a string that is known to be properly encoded with `E`.
 fn[E] estr(s : String) -> EStr[E] {
-  { inner: s }
+  { inner: s, }
 }
 
 ///|
 /// An empty `EStr`.
 pub fn[E] EStr::empty() -> EStr[E] {
-  { inner: "" }
+  { inner: "", }
 }
 
 ///|
@@ -66,7 +66,7 @@ pub fn[E] EStr::empty() -> EStr[E] {
 /// ```
 pub fn[E : @enc.Encoder] EStr::new(s : String) -> EStr[E]? {
   if table_validate(E::table(), s) {
-    Some({ inner: s })
+    Some({ inner: s, })
   } else {
     None
   }
@@ -103,13 +103,13 @@ pub fn[E : @enc.Encoder] EStr::force_encode_byte(x : Byte) -> EStr[E] {
   guard E::table().allows_pct_encoded() else {
     abort("table does not allow percent-encoded octets")
   }
-  { inner: encode_byte(x.to_int()) }
+  { inner: encode_byte(x.to_int()), }
 }
 
 ///|
 /// Reinterprets the `EStr` with another encoder, assuming validity.
 fn[E, F] EStr::cast(self : EStr[E]) -> EStr[F] {
-  { inner: self.inner }
+  { inner: self.inner, }
 }
 
 ///|
@@ -216,7 +216,7 @@ pub fn[E : @enc.Encoder] EStr::decode_to_string(
   self : EStr[E],
 ) -> String raise DecodeError {
   self.assert_decodable()
-  let sb = StringBuilder::new(size_hint=self.inner.length())
+  let sb = StringBuilder(size_hint=self.inner.length())
   let mut ok = true
   decode_walk(self.inner, s => sb.write_string(s), (valid, invalid) => {
     sb.write_string(valid)
@@ -246,7 +246,7 @@ pub fn[E : @enc.Encoder] EStr::decode_to_string(
 /// ```
 pub fn[E : @enc.Encoder] EStr::decode_to_string_lossy(self : EStr[E]) -> String {
   self.assert_decodable()
-  let sb = StringBuilder::new(size_hint=self.inner.length())
+  let sb = StringBuilder(size_hint=self.inner.length())
   decode_walk(self.inner, s => sb.write_string(s), (valid, invalid) => {
     sb.write_string(valid)
     if !invalid.is_empty() {
@@ -408,13 +408,13 @@ pub struct EString[E] {
 ///|
 /// Creates a new empty `EString`.
 pub fn[E] EString::new() -> EString[E] {
-  { buf: "" }
+  { buf: "", }
 }
 
 ///|
 /// Returns the `EString` as an [`EStr`].
 pub fn[E] EString::to_estr(self : EString[E]) -> EStr[E] {
-  { inner: self.buf }
+  { inner: self.buf, }
 }
 
 ///|
@@ -450,7 +450,7 @@ pub fn[E : @enc.Encoder] EString::encode(
   guard table.allows_pct_encoded() else {
     abort("table does not allow percent-encoded octets")
   }
-  let sb = StringBuilder::new(size_hint=s.length() * 3)
+  let sb = StringBuilder(size_hint=s.length() * 3)
   encode_str(sb, table, s)
   self.buf = self.buf + sb.to_string()
 }

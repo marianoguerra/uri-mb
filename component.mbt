@@ -40,7 +40,7 @@ pub fn Scheme::new(s : String) -> Scheme? {
   if !table_validate(@enc.table_scheme, slice(s, 1, s.length())) {
     return None
   }
-  Some({ inner: s })
+  Some({ inner: s, })
 }
 
 ///|
@@ -60,7 +60,7 @@ pub fn Scheme::new_or_panic(s : String) -> Scheme {
 ///|
 /// Wraps a string that is known to be a valid scheme name.
 fn scheme_validated(s : String) -> Scheme {
-  { inner: s }
+  { inner: s, }
 }
 
 ///|
@@ -178,7 +178,7 @@ type IAuth = Authority[@enc.IUserinfo, @enc.IRegName]
 ///|
 /// An empty authority component.
 pub fn[U, R] Authority::empty() -> Authority[U, R] {
-  { userinfo: None, host: "", host_parsed: RegName(EStr::empty()), port: None }
+  { userinfo: None, host: "", host_parsed: RegName(EStr::empty()), port: None, }
 }
 
 ///|
@@ -206,7 +206,7 @@ fn[U, R, U2, R2] Authority::cast(self : Authority[U, R]) -> Authority[U2, R2] {
 /// }
 /// ```
 pub fn[U, R] Authority::as_str(self : Authority[U, R]) -> String {
-  let sb = StringBuilder::new(size_hint=self.host.length() + 16)
+  let sb = StringBuilder(size_hint=self.host.length() + 16)
   if self.userinfo is Some(v) {
     sb.write_string(v.as_str())
     sb.write_char('@')

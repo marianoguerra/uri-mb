@@ -8,6 +8,6 @@ repository = "https://github.com/marianoguerra/uri-mb"
 
 license = "Apache-2.0"
 
-keywords = ["uri", "iri", "url", "parser", "rfc3986"]
+keywords = [ "uri", "iri", "url", "parser", "rfc3986" ]
 
 description = "A generic URI/IRI handling library compliant with RFC 3986/3987, ported from the Rust crate fluent-uri."

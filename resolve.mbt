@@ -118,7 +118,7 @@ fn remove_dot_segments(abs : String, rel : String?) -> (String, Bool) {
       start = end + 1
     }
   }
-  let sb = StringBuilder::new(size_hint=abs.length())
+  let sb = StringBuilder(size_hint=abs.length())
   for piece in pieces {
     sb.write_string(piece)
   }

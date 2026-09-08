@@ -24,7 +24,7 @@ fn ri_text(
   query : String?,
   fragment : String?,
 ) -> String {
-  let sb = StringBuilder::new(size_hint=path.length() + 32)
+  let sb = StringBuilder(size_hint=path.length() + 32)
   if scheme is Some(s) {
     sb.write_string(s.as_str())
     sb.write_char(':')
@@ -82,7 +82,7 @@ fn Ri::set_fragment(self : Ri, fragment : String?) -> Ri {
     Some(f) => stripped + "#" + f
     None => stripped
   }
-  { ..self, text, fragment }
+  { ..self, text, fragment, }
 }
 
 // -----------------------------------------------------------------------

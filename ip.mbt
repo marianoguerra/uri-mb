@@ -160,7 +160,7 @@ fn to_hex_lower(x : Int) -> String {
     return "0"
   }
   let digits = "0123456789abcdef"
-  let sb = StringBuilder::new(size_hint=4)
+  let sb = StringBuilder(size_hint=4)
   let mut started = false
   for shift in [12, 8, 4, 0] {
     let d = (x >> shift) & 0xf

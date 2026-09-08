@@ -8,7 +8,7 @@
 /// Rebuilds a URI reference from its components, as `fuzz_targets/parse.rs`
 /// does. The result must be the original string.
 fn reassemble(r : @uri.IriRef) -> String raise {
-  let sb = StringBuilder::new()
+  let sb = StringBuilder()
   if r.scheme is Some(s) {
     sb.write_string(s.as_str())
     sb.write_char(':')
@@ -49,7 +49,7 @@ fn slice_from(s : String, start : Int) -> String {
 /// A textual description of the components of a URI reference, used to check
 /// that two references decompose in the same way.
 fn components(r : @uri.IriRef) -> String {
-  let sb = StringBuilder::new()
+  let sb = StringBuilder()
   sb.write_string("scheme=\{opt_str(r.scheme.map(s => s.as_str()))};")
   match r.authority {
     None => sb.write_string("auth=none;")

@@ -123,6 +123,7 @@ pub impl[R] Show for Host[R]
 pub struct Ipv4Addr(Byte, Byte, Byte, Byte) derive(Compare, Eq, Hash)
 pub fn Ipv4Addr::new(Byte, Byte, Byte, Byte) -> Self
 pub fn Ipv4Addr::octets(Self) -> (Byte, Byte, Byte, Byte)
+pub fn Ipv4Addr::to_string(Self) -> String
 pub impl Show for Ipv4Addr
 pub impl @debug.Debug for Ipv4Addr
 
@@ -130,6 +131,7 @@ pub struct Ipv6Addr(Bytes) derive(Compare, Eq, Hash)
 pub fn Ipv6Addr::new(Int, Int, Int, Int, Int, Int, Int, Int) -> Self
 pub fn Ipv6Addr::octets(Self) -> Bytes
 pub fn Ipv6Addr::segments(Self) -> Array[Int]
+pub fn Ipv6Addr::to_string(Self) -> String
 pub impl Show for Ipv6Addr
 pub impl @debug.Debug for Ipv6Addr
 

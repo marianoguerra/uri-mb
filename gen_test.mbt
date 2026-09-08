@@ -31,7 +31,7 @@ let alphabet : Array[String] = [
 /// Generates a random string of up to `max_parts` pieces of the alphabet.
 fn gen_junk(rand : @random.Rand, max_parts : Int) -> String {
   let n = rand.int(limit=max_parts + 1)
-  let sb = StringBuilder::new()
+  let sb = StringBuilder()
   for _ in 0..<n {
     sb.write_string(alphabet[rand.int(limit=alphabet.length())])
   }
@@ -47,7 +47,7 @@ fn gen_from_table(
   max_parts : Int,
 ) -> String {
   let n = rand.int(limit=max_parts + 1)
-  let sb = StringBuilder::new()
+  let sb = StringBuilder()
   for _ in 0..<n {
     let part = alphabet[rand.int(limit=alphabet.length())]
     // Keep the piece if the table allows it, otherwise mostly drop it.
@@ -64,7 +64,7 @@ fn gen_from_table(
 /// Generates a string that is likely, but not guaranteed, to parse as a URI
 /// reference.
 fn gen_uri_ref_string(rand : @random.Rand) -> String {
-  let sb = StringBuilder::new()
+  let sb = StringBuilder()
   let has_scheme = rand.int(limit=3) > 0
   if has_scheme {
     sb.write_string(["a", "foo", "HTTP", "http", "z9+-."][rand.int(limit=5)])
@@ -120,7 +120,7 @@ fn gen_uri_ref_string(rand : @random.Rand) -> String {
 /// Generates a string that is likely to parse as a base URI, i.e., a URI with
 /// a scheme and no fragment.
 fn gen_base_string(rand : @random.Rand) -> String {
-  let sb = StringBuilder::new()
+  let sb = StringBuilder()
   sb.write_string(["a", "foo", "http"][rand.int(limit=3)])
   sb.write_char(':')
   if rand.int(limit=2) == 0 {
