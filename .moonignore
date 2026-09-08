@@ -1,0 +1,17 @@
+# Packaging ignore list. Replaces .gitignore for `moon package` rather than
+# adding to it, so it repeats the build/vendor entries from there on top of the
+# publish-only exclusions. Without the `target` entries the Rust oracle's build
+# directory would be packaged.
+.DS_Store
+_build/
+target/
+target
+.mooncakes/
+.moonagent/
+
+# Development tooling only: the Rust conformance oracle needs cargo and a
+# network fetch of `fluent-uri`, and is of no use to a consumer. The generated
+# corpus it produces ships, so `moon test` still checks this port against
+# `fluent-uri` from the published package alone.
+tools/
+AGENTS.md

@@ -356,6 +356,10 @@ components, in normalization, in reference resolution, in fragment
 manipulation or in the conversion of an IRI to a URI shows up as a failing
 test.
 
+The generated corpus ships with the package, so `moon test` replays it
+anywhere. The oracle itself lives only in this repository, since regenerating
+needs cargo and a checkout of `fluent-uri`.
+
 Regenerate the checked-in suite with:
 
     cargo run --release --manifest-path tools/oracle/Cargo.toml -- --out conformance_test.mbt
