@@ -21,34 +21,40 @@ pub(all) suberror BuildError {
   PathStartsWithDoubleSlash
   FirstPathSegmentContainsColon
 } derive(Eq, @debug.Debug)
+pub fn BuildError::to_string(Self) -> String
 pub impl Show for BuildError
 
 pub(all) suberror ConvertError {
-  NotAscii(index~ : Int)
+  NotAscii(index~ : Int32)
   NoScheme
 } derive(Eq, @debug.Debug)
+pub fn ConvertError::to_string(Self) -> String
 pub impl Show for ConvertError
 
 pub(all) suberror DecodeError {
   NotUtf8(bytes~ : Bytes)
 } derive(Eq, @debug.Debug)
+pub fn DecodeError::to_string(Self) -> String
 pub impl Show for DecodeError
 
 pub(all) suberror InvalidPort {
   InvalidPort(port~ : String)
 } derive(Eq, @debug.Debug)
+pub fn InvalidPort::to_string(Self) -> String
 pub impl Show for InvalidPort
 
 pub(all) suberror NormalizeError {
   NormalizePathUnderflow
 } derive(Eq, @debug.Debug)
+pub fn NormalizeError::to_string(Self) -> String
 pub impl Show for NormalizeError
 
 pub(all) suberror ParseError {
-  UnexpectedCharOrEnd(index~ : Int)
-  InvalidIpv6Addr(index~ : Int)
+  UnexpectedCharOrEnd(index~ : Int32)
+  InvalidIpv6Addr(index~ : Int32)
 } derive(Eq, @debug.Debug)
-pub fn ParseError::index(Self) -> Int
+pub fn ParseError::index(Self) -> Int32
+pub fn ParseError::to_string(Self) -> String
 pub impl Show for ParseError
 
 pub(all) suberror ResolveError {
@@ -56,6 +62,7 @@ pub(all) suberror ResolveError {
   InvalidReferenceAgainstOpaqueBase
   PathUnderflow
 } derive(Eq, @debug.Debug)
+pub fn ResolveError::to_string(Self) -> String
 pub impl Show for ResolveError
 
 // Types and methods
@@ -70,13 +77,15 @@ pub fn[U, R] Authority::empty() -> Self[U, R]
 pub fn[U, R] Authority::has_port(Self[U, R]) -> Bool
 pub fn[U, R] Authority::has_userinfo(Self[U, R]) -> Bool
 pub fn[U, R] Authority::make(host~ : Host[R], userinfo? : EStr[U], port? : EStr[@enc.Port]) -> Self[U, R]
-pub fn[U, R] Authority::port_to_u16(Self[U, R]) -> Int? raise InvalidPort
+pub fn[U, R] Authority::port_to_u16(Self[U, R]) -> Int32? raise InvalidPort
+pub fn[U, R] Authority::to_string(Self[U, R]) -> String
 pub impl[U, R] Show for Authority[U, R]
 
 pub struct EStr[E] {
   inner : String
 }
 pub fn[E] EStr::as_str(Self[E]) -> String
+pub fn[E] EStr::compare(Self[E], Self[E]) -> Int32
 pub fn[E : @enc.Encoder] EStr::decode_to_bytes(Self[E]) -> Bytes
 pub fn[E : @enc.Encoder] EStr::decode_to_string(Self[E]) -> String raise DecodeError
 pub fn[E : @enc.Encoder] EStr::decode_to_string_lossy(Self[E]) -> String
@@ -85,13 +94,14 @@ pub fn[E : @enc.Encoder] EStr::force_encode_byte(Byte) -> Self[E]
 pub fn[E : @enc.PathEncoder] EStr::is_absolute(Self[E]) -> Bool
 pub fn[E] EStr::is_empty(Self[E]) -> Bool
 pub fn[E : @enc.PathEncoder] EStr::is_rootless(Self[E]) -> Bool
-pub fn[E] EStr::length(Self[E]) -> Int
+pub fn[E] EStr::length(Self[E]) -> Int32
 pub fn[E : @enc.Encoder] EStr::new(String) -> Self[E]?
 pub fn[E : @enc.Encoder] EStr::new_or_panic(String) -> Self[E]
 pub fn[E] EStr::rsplit_once(Self[E], Char) -> (Self[E], Self[E])?
 pub fn[E : @enc.PathEncoder] EStr::segments_if_absolute(Self[E]) -> Iter[Self[E]]?
 pub fn[E] EStr::split(Self[E], Char) -> Iter[Self[E]]
 pub fn[E] EStr::split_once(Self[E], Char) -> (Self[E], Self[E])?
+pub fn[E] EStr::to_string(Self[E]) -> String
 pub impl[E] Compare for EStr[E]
 pub impl[E] Eq for EStr[E]
 pub impl[E] Hash for EStr[E]
@@ -108,6 +118,7 @@ pub fn[E] EString::new() -> Self[E]
 pub fn[E : @enc.Encoder] EString::push(Self[E], Char) -> Unit
 pub fn[E] EString::push_estr(Self[E], EStr[E]) -> Unit
 pub fn[E] EString::to_estr(Self[E]) -> EStr[E]
+pub fn[E] EString::to_string(Self[E]) -> String
 pub impl[E] Eq for EString[E]
 pub impl[E] Show for EString[E]
 pub impl[E] @debug.Debug for EString[E]
@@ -118,9 +129,11 @@ pub(all) enum Host[R] {
   IpvFuture
   RegName(EStr[R])
 } derive(Eq, @debug.Debug)
+pub fn[R] Host::to_string(Self[R]) -> String
 pub impl[R] Show for Host[R]
 
 pub struct Ipv4Addr(Byte, Byte, Byte, Byte) derive(Compare, Eq, Hash)
+pub fn Ipv4Addr::compare(Self, Self) -> Int32
 pub fn Ipv4Addr::new(Byte, Byte, Byte, Byte) -> Self
 pub fn Ipv4Addr::octets(Self) -> (Byte, Byte, Byte, Byte)
 pub fn Ipv4Addr::to_string(Self) -> String
@@ -128,9 +141,10 @@ pub impl Show for Ipv4Addr
 pub impl @debug.Debug for Ipv4Addr
 
 pub struct Ipv6Addr(Bytes) derive(Compare, Eq, Hash)
-pub fn Ipv6Addr::new(Int, Int, Int, Int, Int, Int, Int, Int) -> Self
+pub fn Ipv6Addr::compare(Self, Self) -> Int32
+pub fn Ipv6Addr::new(Int32, Int32, Int32, Int32, Int32, Int32, Int32, Int32) -> Self
 pub fn Ipv6Addr::octets(Self) -> Bytes
-pub fn Ipv6Addr::segments(Self) -> Array[Int]
+pub fn Ipv6Addr::segments(Self) -> Array[Int32]
 pub fn Ipv6Addr::to_string(Self) -> String
 pub impl Show for Ipv6Addr
 pub impl @debug.Debug for Ipv6Addr
@@ -145,11 +159,13 @@ pub struct Iri {
 }
 pub fn Iri::as_uri(Self) -> Uri raise ConvertError
 pub fn Iri::build(scheme~ : Scheme, path~ : EStr[@enc.IPath], authority? : Authority[@enc.IUserinfo, @enc.IRegName], query? : EStr[@enc.IQuery], fragment? : EStr[@enc.IFragment]) -> Self raise BuildError
-pub fn Iri::normalize(Self, default_port? : (String) -> Int?) -> Self
-pub fn Iri::normalize_strict(Self, default_port? : (String) -> Int?) -> Self raise NormalizeError
+pub fn Iri::compare(Self, Self) -> Int32
+pub fn Iri::normalize(Self, default_port? : (String) -> Int32?) -> Self
+pub fn Iri::normalize_strict(Self, default_port? : (String) -> Int32?) -> Self raise NormalizeError
 pub fn Iri::parse(String) -> Self raise ParseError
 pub fn Iri::strip_fragment(Self) -> Self
 pub fn Iri::to_iri_ref(Self) -> IriRef
+pub fn Iri::to_string(Self) -> String
 pub fn Iri::to_uri(Self) -> Uri
 pub fn Iri::with_fragment(Self, EStr[@enc.IFragment]?) -> Self
 pub impl Compare for Iri
@@ -170,11 +186,13 @@ pub fn IriRef::as_iri(Self) -> Iri raise ConvertError
 pub fn IriRef::as_uri(Self) -> Uri raise ConvertError
 pub fn IriRef::as_uri_ref(Self) -> UriRef raise ConvertError
 pub fn IriRef::build(path~ : EStr[@enc.IPath], scheme? : Scheme, authority? : Authority[@enc.IUserinfo, @enc.IRegName], query? : EStr[@enc.IQuery], fragment? : EStr[@enc.IFragment]) -> Self raise BuildError
-pub fn IriRef::normalize(Self, default_port? : (String) -> Int?) -> Self
-pub fn IriRef::normalize_strict(Self, default_port? : (String) -> Int?) -> Self raise NormalizeError
+pub fn IriRef::compare(Self, Self) -> Int32
+pub fn IriRef::normalize(Self, default_port? : (String) -> Int32?) -> Self
+pub fn IriRef::normalize_strict(Self, default_port? : (String) -> Int32?) -> Self raise NormalizeError
 pub fn IriRef::parse(String) -> Self raise ParseError
 pub fn IriRef::resolve_against(Self, Iri, allow_path_underflow? : Bool) -> Iri raise ResolveError
 pub fn IriRef::strip_fragment(Self) -> Self
+pub fn IriRef::to_string(Self) -> String
 pub fn IriRef::to_uri_ref(Self) -> UriRef
 pub fn IriRef::with_fragment(Self, EStr[@enc.IFragment]?) -> Self
 pub impl Compare for IriRef
@@ -189,6 +207,7 @@ pub struct Scheme {
 pub fn Scheme::as_str(Self) -> String
 pub fn Scheme::new(String) -> Self?
 pub fn Scheme::new_or_panic(String) -> Self
+pub fn Scheme::to_string(Self) -> String
 pub impl Eq for Scheme
 pub impl Hash for Scheme
 pub impl Show for Scheme
@@ -203,12 +222,14 @@ pub struct Uri {
   fragment : EStr[@enc.Fragment]?
 }
 pub fn Uri::build(scheme~ : Scheme, path~ : EStr[@enc.Path], authority? : Authority[@enc.Userinfo, @enc.RegName], query? : EStr[@enc.Query], fragment? : EStr[@enc.Fragment]) -> Self raise BuildError
-pub fn Uri::normalize(Self, default_port? : (String) -> Int?) -> Self
-pub fn Uri::normalize_strict(Self, default_port? : (String) -> Int?) -> Self raise NormalizeError
+pub fn Uri::compare(Self, Self) -> Int32
+pub fn Uri::normalize(Self, default_port? : (String) -> Int32?) -> Self
+pub fn Uri::normalize_strict(Self, default_port? : (String) -> Int32?) -> Self raise NormalizeError
 pub fn Uri::parse(String) -> Self raise ParseError
 pub fn Uri::strip_fragment(Self) -> Self
 pub fn Uri::to_iri(Self) -> Iri
 pub fn Uri::to_iri_ref(Self) -> IriRef
+pub fn Uri::to_string(Self) -> String
 pub fn Uri::to_uri_ref(Self) -> UriRef
 pub fn Uri::with_fragment(Self, EStr[@enc.Fragment]?) -> Self
 pub impl Compare for Uri
@@ -227,12 +248,14 @@ pub struct UriRef {
 }
 pub fn UriRef::as_uri(Self) -> Uri raise ConvertError
 pub fn UriRef::build(path~ : EStr[@enc.Path], scheme? : Scheme, authority? : Authority[@enc.Userinfo, @enc.RegName], query? : EStr[@enc.Query], fragment? : EStr[@enc.Fragment]) -> Self raise BuildError
-pub fn UriRef::normalize(Self, default_port? : (String) -> Int?) -> Self
-pub fn UriRef::normalize_strict(Self, default_port? : (String) -> Int?) -> Self raise NormalizeError
+pub fn UriRef::compare(Self, Self) -> Int32
+pub fn UriRef::normalize(Self, default_port? : (String) -> Int32?) -> Self
+pub fn UriRef::normalize_strict(Self, default_port? : (String) -> Int32?) -> Self raise NormalizeError
 pub fn UriRef::parse(String) -> Self raise ParseError
 pub fn UriRef::resolve_against(Self, Uri, allow_path_underflow? : Bool) -> Uri raise ResolveError
 pub fn UriRef::strip_fragment(Self) -> Self
 pub fn UriRef::to_iri_ref(Self) -> IriRef
+pub fn UriRef::to_string(Self) -> String
 pub fn UriRef::with_fragment(Self, EStr[@enc.Fragment]?) -> Self
 pub impl Compare for UriRef
 pub impl Eq for UriRef

@@ -259,7 +259,7 @@ pub impl Show for InvalidPort with fn output(self, logger) {
 /// ```
 pub fn[U, R] Authority::port_to_u16(
   self : Authority[U, R],
-) -> Int? raise InvalidPort {
+) -> Int32? raise InvalidPort {
   guard self.port is Some(port) else { return None }
   let s = port.as_str()
   if s.is_empty() {
@@ -286,3 +286,71 @@ pub fn[U, R] Authority::has_userinfo(self : Authority[U, R]) -> Bool {
 pub fn[U, R] Authority::has_port(self : Authority[U, R]) -> Bool {
   self.port is Some(_)
 }
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Scheme with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Scheme with Hash::{hash, hash_combine}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Scheme with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Scheme with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Host with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Host with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Host with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Authority with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Authority with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Authority with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend InvalidPort with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend InvalidPort with Debug::{to_repr}
+
+///|
+pub extend InvalidPort with Show::{to_string}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend InvalidPort with Show::{output}

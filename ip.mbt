@@ -44,14 +44,14 @@ pub struct Ipv6Addr(Bytes) derive(Eq, Compare, Hash)
 ///|
 /// Creates an IPv6 address from its eight 16-bit segments.
 pub fn Ipv6Addr::new(
-  a : Int,
-  b : Int,
-  c : Int,
-  d : Int,
-  e : Int,
-  f : Int,
-  g : Int,
-  h : Int,
+  a : Int32,
+  b : Int32,
+  c : Int32,
+  d : Int32,
+  e : Int32,
+  f : Int32,
+  g : Int32,
+  h : Int32,
 ) -> Ipv6Addr {
   let octets : Array[Byte] = []
   for seg in [a, b, c, d, e, f, g, h] {
@@ -71,13 +71,13 @@ pub let ipv6_unspecified : Ipv6Addr = Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 0)
 
 ///|
 /// Returns the `i`th 16-bit segment of the address.
-fn Ipv6Addr::seg(self : Ipv6Addr, i : Int) -> Int {
+fn Ipv6Addr::seg(self : Ipv6Addr, i : Int32) -> Int32 {
   (self.0[i * 2].to_int() << 8) | self.0[i * 2 + 1].to_int()
 }
 
 ///|
 /// Returns the eight 16-bit segments of the address.
-pub fn Ipv6Addr::segments(self : Ipv6Addr) -> Array[Int] {
+pub fn Ipv6Addr::segments(self : Ipv6Addr) -> Array[Int32] {
   let out = []
   for i in 0..<8 {
     out.push(self.seg(i))
@@ -130,7 +130,7 @@ pub impl Show for Ipv6Addr with fn output(self, logger) {
   }
 
   ///|
-  fn write_range(from : Int, to : Int) -> Unit {
+  fn write_range(from : Int32, to : Int32) -> Unit {
     for i in from..<to {
       if i > from {
         logger.write_char(':')
@@ -155,7 +155,7 @@ pub impl Debug for Ipv6Addr with fn to_repr(self) {
 
 ///|
 /// Formats `x` as lowercase hexadecimal without leading zeros.
-fn to_hex_lower(x : Int) -> String {
+fn to_hex_lower(x : Int32) -> String {
   if x == 0 {
     return "0"
   }
@@ -171,3 +171,59 @@ fn to_hex_lower(x : Int) -> String {
   }
   sb.to_string()
 }
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv4Addr with Eq::{not_equal, equal}
+
+///|
+pub extend Ipv4Addr with Compare::{compare}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv4Addr with Compare::{op_lt, op_le, op_ge, op_gt}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv4Addr with Hash::{hash, hash_combine}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv4Addr with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv4Addr with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv6Addr with Eq::{not_equal, equal}
+
+///|
+pub extend Ipv6Addr with Compare::{compare}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv6Addr with Compare::{op_lt, op_le, op_ge, op_gt}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv6Addr with Hash::{hash, hash_combine}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv6Addr with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Ipv6Addr with Debug::{to_repr}

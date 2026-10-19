@@ -8,13 +8,13 @@
 
 ///|
 /// Returns the UTF-16 code unit at `i` as an `Int`.
-fn code_at(s : String, i : Int) -> Int {
+fn code_at(s : String, i : Int32) -> Int32 {
   s[i].to_int()
 }
 
 ///|
 /// Returns the code unit at `i`, or `-1` if `i` is out of bounds.
-fn code_or_eof(s : String, i : Int) -> Int {
+fn code_or_eof(s : String, i : Int32) -> Int32 {
   if i < 0 || i >= s.length() {
     -1
   } else {
@@ -25,7 +25,7 @@ fn code_or_eof(s : String, i : Int) -> Int {
 ///|
 /// Returns the code point starting at `i` together with its length in code
 /// units. An unpaired surrogate is returned as is, which no table allows.
-fn next_code_point(s : String, i : Int) -> (Int, Int) {
+fn next_code_point(s : String, i : Int32) -> (Int32, Int32) {
   let c = code_at(s, i)
   if c >= 0xd800 && c <= 0xdbff && i + 1 < s.length() {
     let d = code_at(s, i + 1)
@@ -38,7 +38,7 @@ fn next_code_point(s : String, i : Int) -> (Int, Int) {
 
 ///|
 /// Returns the substring between the two code unit offsets.
-fn slice(s : String, start : Int, end : Int) -> String {
+fn slice(s : String, start : Int32, end : Int32) -> String {
   if start == 0 && end == s.length() {
     s
   } else {
@@ -73,7 +73,7 @@ fn ascii_lowercase(s : String) -> String {
 
 ///|
 /// Appends the UTF-8 encoding of `cp` to `out`.
-fn utf8_encode_code_point(out : Array[Byte], cp : Int) -> Unit {
+fn utf8_encode_code_point(out : Array[Byte], cp : Int32) -> Unit {
   if cp < 0x80 {
     out.push(cp.to_byte())
   } else if cp < 0x800 {
@@ -94,7 +94,7 @@ fn utf8_encode_code_point(out : Array[Byte], cp : Int) -> Unit {
 ///|
 /// Returns the expected length of the UTF-8 sequence starting with the
 /// non-ASCII octet `x`, or `0` if `x` cannot start one.
-fn utf8_char_width(x : Int) -> Int {
+fn utf8_char_width(x : Int32) -> Int32 {
   if x < 0xc2 {
     0
   } else if x < 0xe0 {
@@ -110,7 +110,7 @@ fn utf8_char_width(x : Int) -> Int {
 
 ///|
 /// Decodes a byte range known to be well-formed UTF-8 into a string.
-fn utf8_decode_valid(b : ArrayView[Byte], start : Int, end : Int) -> String {
+fn utf8_decode_valid(b : ArrayView[Byte], start : Int32, end : Int32) -> String {
   let sb = StringBuilder(size_hint=end - start)
   let mut i = start
   while i < end {
@@ -158,7 +158,7 @@ fn utf8_chunks(
   let mut i = 0
 
   ///|
-  fn is_cont(j : Int) -> Bool {
+  fn is_cont(j : Int32) -> Bool {
     let x = b[j].to_int()
     x >= 0x80 && x <= 0xbf
   }

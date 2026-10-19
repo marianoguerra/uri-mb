@@ -6,7 +6,7 @@ let hex_digits : String = "0123456789ABCDEF"
 
 ///|
 /// Returns the value of the hexadecimal digit `x`, or `-1` if `x` is not one.
-fn decode_hexdig(x : Int) -> Int {
+fn decode_hexdig(x : Int32) -> Int32 {
   if x >= '0'.to_int() && x <= '9'.to_int() {
     x - '0'.to_int()
   } else if x >= 'A'.to_int() && x <= 'F'.to_int() {
@@ -20,25 +20,25 @@ fn decode_hexdig(x : Int) -> Int {
 
 ///|
 /// Checks whether `x` is a hexadecimal digit.
-fn is_hexdig(x : Int) -> Bool {
+fn is_hexdig(x : Int32) -> Bool {
   decode_hexdig(x) >= 0
 }
 
 ///|
 /// Checks whether `hi` and `lo` are both hexadecimal digits.
-fn is_hexdig_pair(hi : Int, lo : Int) -> Bool {
+fn is_hexdig_pair(hi : Int32, lo : Int32) -> Bool {
   is_hexdig(hi) && is_hexdig(lo)
 }
 
 ///|
 /// Decodes the octet represented by the hexadecimal digits `hi` and `lo`.
-fn decode_octet(hi : Int, lo : Int) -> Int {
+fn decode_octet(hi : Int32, lo : Int32) -> Int32 {
   (decode_hexdig(hi) << 4) | decode_hexdig(lo)
 }
 
 ///|
 /// Percent-encodes a single octet, e.g. `0x2f` to `"%2F"`.
-fn encode_byte(x : Int) -> String {
+fn encode_byte(x : Int32) -> String {
   let sb = StringBuilder(size_hint=3)
   sb.write_char('%')
   sb.write_char(hex_digits.get_char((x >> 4) & 0xf).unwrap())
@@ -48,7 +48,7 @@ fn encode_byte(x : Int) -> String {
 
 ///|
 /// Appends the percent-encoding of a single octet to `sb`.
-fn push_encoded_byte(sb : StringBuilder, x : Int) -> Unit {
+fn push_encoded_byte(sb : StringBuilder, x : Int32) -> Unit {
   sb.write_char('%')
   sb.write_char(hex_digits.get_char((x >> 4) & 0xf).unwrap())
   sb.write_char(hex_digits.get_char(x & 0xf).unwrap())

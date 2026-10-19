@@ -9,15 +9,15 @@
 pub(all) suberror ParseError {
   /// Unexpected character or end of input. The index points to the first code
   /// unit of the character, or to the end of input.
-  UnexpectedCharOrEnd(index~ : Int)
+  UnexpectedCharOrEnd(index~ : Int32)
   /// Invalid IPv6 address. The index points to the first code unit of the
   /// address.
-  InvalidIpv6Addr(index~ : Int)
+  InvalidIpv6Addr(index~ : Int32)
 } derive(Eq, Debug)
 
 ///|
 /// Returns the index at which the error occurred.
-pub fn ParseError::index(self : ParseError) -> Int {
+pub fn ParseError::index(self : ParseError) -> Int32 {
   match self {
     UnexpectedCharOrEnd(index~) => index
     InvalidIpv6Addr(index~) => index
@@ -47,8 +47,8 @@ priv enum HostMeta {
 
 ///|
 priv struct AuthMeta {
-  host_start : Int
-  host_end : Int
+  host_start : Int32
+  host_end : Int32
   host_meta : HostMeta
 }
 
@@ -63,7 +63,7 @@ priv enum PathKind {
 /// An intermediate result of reading one segment of an IPv6 address.
 priv enum Seg {
   /// `*1":" 1*4HEXDIG`
-  SegNormal(Int, Bool)
+  SegNormal(Int32, Bool)
   /// `"::"`
   SegEllipsis
   /// `*1":" 1*4HEXDIG "."`
@@ -84,17 +84,17 @@ priv enum Seg {
 /// components they define are validated.
 priv struct Parser {
   s : String
-  len : Int
+  len : Int32
   ascii_only : Bool
   scheme_required : Bool
-  mut pos : Int
+  mut pos : Int32
   // The index of the trailing colon of the scheme, or 0 if there is no scheme.
-  mut scheme_end : Int
+  mut scheme_end : Int32
   mut auth : AuthMeta?
-  mut path_start : Int
-  mut path_end : Int
+  mut path_start : Int32
+  mut path_end : Int32
   // One code unit past the last one of the query, or 0 if there is no query.
-  mut query_end : Int
+  mut query_end : Int32
 }
 
 ///|
@@ -119,7 +119,7 @@ fn Parser::new(
 
 ///|
 /// Returns the code unit `i` positions ahead, or `-1` past the end of input.
-fn Parser::peek(self : Parser, i : Int) -> Int {
+fn Parser::peek(self : Parser, i : Int32) -> Int32 {
   code_or_eof(self.s, self.pos + i)
 }
 
@@ -129,7 +129,7 @@ fn Parser::has_remaining(self : Parser) -> Bool {
 }
 
 ///|
-fn Parser::skip(self : Parser, n : Int) -> Unit {
+fn Parser::skip(self : Parser, n : Int32) -> Unit {
   self.pos += n
 }
 
@@ -212,7 +212,7 @@ fn Parser::read_str(self : Parser, t : String) -> Bool {
 }
 
 ///|
-fn Parser::peek_digit(self : Parser, i : Int) -> Int {
+fn Parser::peek_digit(self : Parser, i : Int32) -> Int32 {
   let x = self.peek(i)
   if x >= '0'.to_int() && x <= '9'.to_int() {
     x - '0'.to_int()
@@ -223,7 +223,7 @@ fn Parser::peek_digit(self : Parser, i : Int) -> Int {
 
 ///|
 fn Parser::read_v6(self : Parser) -> Ipv6Addr? {
-  let segs : Array[Int] = Array::make(8, 0)
+  let segs : Array[Int32] = Array::make(8, 0)
   let mut ellipsis_idx = 8
   let mut i = 0
   while i < 8 {
@@ -350,7 +350,7 @@ fn Parser::read_v4(self : Parser) -> Ipv4Addr? {
 }
 
 ///|
-fn Parser::read_v4_octet(self : Parser) -> Int? {
+fn Parser::read_v4_octet(self : Parser) -> Int32? {
   let mut res = self.peek_digit(0)
   if res < 0 {
     return None
@@ -591,3 +591,21 @@ fn parse_ri(
     },
   }
 }
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend ParseError with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend ParseError with Debug::{to_repr}
+
+///|
+pub extend ParseError with Show::{to_string}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend ParseError with Show::{output}

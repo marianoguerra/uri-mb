@@ -91,7 +91,7 @@ fn normalize_estr(
 fn normalize_ri(
   r : Ri,
   ascii_only~ : Bool,
-  default_port~ : (String) -> Int?,
+  default_port~ : (String) -> Int32?,
 ) -> (Ri, Bool) {
   let data_table = if ascii_only { @enc.table_data } else { @enc.table_idata }
   let scheme = opt_map(r.scheme, s => {
@@ -165,7 +165,7 @@ fn normalize_ri(
 /// Checks whether the nonempty port `s` denotes the number `default`.
 /// Leading zeros are ignored; a port that does not fit in a `u16` never
 /// matches.
-fn port_eq(s : String, default : Int) -> Bool {
+fn port_eq(s : String, default : Int32) -> Bool {
   let mut value = 0
   for i in 0..<s.length() {
     value = value * 10 + (code_at(s, i) - '0'.to_int())
@@ -178,7 +178,7 @@ fn port_eq(s : String, default : Int) -> Bool {
 
 ///|
 /// The default `default_port` function, which knows no default ports.
-fn no_default_port(_scheme : String) -> Int? {
+fn no_default_port(_scheme : String) -> Int32? {
   None
 }
 
@@ -215,7 +215,7 @@ fn no_default_port(_scheme : String) -> Int? {
 /// ```
 pub fn Uri::normalize(
   self : Uri,
-  default_port? : (String) -> Int? = no_default_port,
+  default_port~ : (String) -> Int32? = no_default_port,
 ) -> Uri {
   let (r, _) = normalize_ri(self.to_ri(), ascii_only=true, default_port~)
   uri_of_ri(r)
@@ -230,7 +230,7 @@ pub fn Uri::normalize(
 /// escape the root, e.g. in `"http://example.com/.."`.
 pub fn Uri::normalize_strict(
   self : Uri,
-  default_port? : (String) -> Int? = no_default_port,
+  default_port~ : (String) -> Int32? = no_default_port,
 ) -> Uri raise NormalizeError {
   let (r, underflow) = normalize_ri(
     self.to_ri(),
@@ -247,7 +247,7 @@ pub fn Uri::normalize_strict(
 /// Normalizes the URI reference. See [`Uri::normalize`].
 pub fn UriRef::normalize(
   self : UriRef,
-  default_port? : (String) -> Int? = no_default_port,
+  default_port~ : (String) -> Int32? = no_default_port,
 ) -> UriRef {
   let (r, _) = normalize_ri(self.to_ri(), ascii_only=true, default_port~)
   uri_ref_of_ri(r)
@@ -258,7 +258,7 @@ pub fn UriRef::normalize(
 /// normalization. See [`Uri::normalize_strict`].
 pub fn UriRef::normalize_strict(
   self : UriRef,
-  default_port? : (String) -> Int? = no_default_port,
+  default_port~ : (String) -> Int32? = no_default_port,
 ) -> UriRef raise NormalizeError {
   let (r, underflow) = normalize_ri(
     self.to_ri(),
@@ -275,7 +275,7 @@ pub fn UriRef::normalize_strict(
 /// Normalizes the IRI. See [`Uri::normalize`].
 pub fn Iri::normalize(
   self : Iri,
-  default_port? : (String) -> Int? = no_default_port,
+  default_port~ : (String) -> Int32? = no_default_port,
 ) -> Iri {
   let (r, _) = normalize_ri(self.to_ri(), ascii_only=false, default_port~)
   iri_of_ri(r)
@@ -286,7 +286,7 @@ pub fn Iri::normalize(
 /// See [`Uri::normalize_strict`].
 pub fn Iri::normalize_strict(
   self : Iri,
-  default_port? : (String) -> Int? = no_default_port,
+  default_port~ : (String) -> Int32? = no_default_port,
 ) -> Iri raise NormalizeError {
   let (r, underflow) = normalize_ri(
     self.to_ri(),
@@ -303,7 +303,7 @@ pub fn Iri::normalize_strict(
 /// Normalizes the IRI reference. See [`Uri::normalize`].
 pub fn IriRef::normalize(
   self : IriRef,
-  default_port? : (String) -> Int? = no_default_port,
+  default_port~ : (String) -> Int32? = no_default_port,
 ) -> IriRef {
   let (r, _) = normalize_ri(self.to_ri(), ascii_only=false, default_port~)
   iri_ref_of_ri(r)
@@ -314,7 +314,7 @@ pub fn IriRef::normalize(
 /// normalization. See [`Uri::normalize_strict`].
 pub fn IriRef::normalize_strict(
   self : IriRef,
-  default_port? : (String) -> Int? = no_default_port,
+  default_port~ : (String) -> Int32? = no_default_port,
 ) -> IriRef raise NormalizeError {
   let (r, underflow) = normalize_ri(
     self.to_ri(),
@@ -326,3 +326,21 @@ pub fn IriRef::normalize_strict(
   }
   iri_ref_of_ri(r)
 }
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend NormalizeError with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend NormalizeError with Debug::{to_repr}
+
+///|
+pub extend NormalizeError with Show::{to_string}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend NormalizeError with Show::{output}

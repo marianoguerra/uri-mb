@@ -41,7 +41,7 @@ fn reassemble(r : @uri.IriRef) -> String raise {
 }
 
 ///|
-fn slice_from(s : String, start : Int) -> String {
+fn slice_from(s : String, start : Int32) -> String {
   s.view(start_offset=start).to_owned()
 }
 

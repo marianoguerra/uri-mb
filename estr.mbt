@@ -120,7 +120,7 @@ pub fn[E] EStr::as_str(self : EStr[E]) -> String {
 
 ///|
 /// Returns the length of the `EStr` in code units.
-pub fn[E] EStr::length(self : EStr[E]) -> Int {
+pub fn[E] EStr::length(self : EStr[E]) -> Int32 {
   self.inner.length()
 }
 
@@ -498,7 +498,7 @@ fn encode_str(
   sb : StringBuilder,
   table : @enc.Table,
   s : String,
-  to_ascii_lowercase? : Bool = false,
+  to_ascii_lowercase~ : Bool = false,
 ) -> Unit {
   let len = s.length()
   let mut i = 0
@@ -587,7 +587,7 @@ fn decode_walk(
 fn decode_walk_octets(
   s : String,
   on_unencoded : (String) -> Unit,
-  on_octet : (Int) -> Unit,
+  on_octet : (Int32) -> Unit,
 ) -> Unit {
   let len = s.length()
   let mut i = 0
@@ -605,3 +605,64 @@ fn decode_walk_octets(
     }
   }
 }
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend EStr with Eq::{not_equal, equal}
+
+///|
+pub extend EStr with Compare::{compare}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend EStr with Compare::{op_lt, op_le, op_ge, op_gt}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend EStr with Hash::{hash, hash_combine}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend EStr with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend EStr with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend DecodeError with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend DecodeError with Debug::{to_repr}
+
+///|
+pub extend DecodeError with Show::{to_string}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend DecodeError with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend EString with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend EString with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend EString with Eq::{not_equal, equal}

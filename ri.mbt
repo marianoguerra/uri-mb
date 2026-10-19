@@ -48,11 +48,11 @@ fn ri_text(
 ///|
 /// Creates a `Ri` from components, computing its text.
 fn ri(
-  scheme? : Scheme? = None,
-  authority? : IAuth? = None,
+  scheme~ : Scheme? = None,
+  authority~ : IAuth? = None,
   path~ : String,
-  query? : String? = None,
-  fragment? : String? = None,
+  query~ : String? = None,
+  fragment~ : String? = None,
 ) -> Ri {
   {
     text: ri_text(scheme, authority, path, query, fragment),
@@ -511,3 +511,115 @@ pub fn IriRef::with_fragment(
 ) -> IriRef {
   iri_ref_of_ri(self.to_ri().set_fragment(opt_map(fragment, v => v.as_str())))
 }
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Uri with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend UriRef with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Iri with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend IriRef with Show::{output}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Uri with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend UriRef with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Iri with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend IriRef with Debug::{to_repr}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Uri with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend UriRef with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Iri with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend IriRef with Eq::{not_equal, equal}
+
+///|
+pub extend Uri with Compare::{compare}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Uri with Compare::{op_lt, op_le, op_ge, op_gt}
+
+///|
+pub extend UriRef with Compare::{compare}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend UriRef with Compare::{op_lt, op_le, op_ge, op_gt}
+
+///|
+pub extend Iri with Compare::{compare}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Iri with Compare::{op_lt, op_le, op_ge, op_gt}
+
+///|
+pub extend IriRef with Compare::{compare}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend IriRef with Compare::{op_lt, op_le, op_ge, op_gt}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Uri with Hash::{hash, hash_combine}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend UriRef with Hash::{hash, hash_combine}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Iri with Hash::{hash, hash_combine}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend IriRef with Hash::{hash, hash_combine}

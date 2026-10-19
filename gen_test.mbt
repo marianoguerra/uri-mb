@@ -6,7 +6,7 @@
 
 ///|
 /// Creates a deterministic random source from a seed.
-fn rng(seed : Int) -> @random.Rand {
+fn rng(seed : Int32) -> @random.Rand {
   let bytes = Array::make(32, b'\x00')
   bytes[0] = (seed & 0xff).to_byte()
   bytes[1] = ((seed >> 8) & 0xff).to_byte()
@@ -29,7 +29,7 @@ let alphabet : Array[String] = [
 
 ///|
 /// Generates a random string of up to `max_parts` pieces of the alphabet.
-fn gen_junk(rand : @random.Rand, max_parts : Int) -> String {
+fn gen_junk(rand : @random.Rand, max_parts : Int32) -> String {
   let n = rand.int(limit=max_parts + 1)
   let sb = StringBuilder()
   for _ in 0..<n {
@@ -44,7 +44,7 @@ fn gen_junk(rand : @random.Rand, max_parts : Int) -> String {
 fn gen_from_table(
   rand : @random.Rand,
   table : @enc.Table,
-  max_parts : Int,
+  max_parts : Int32,
 ) -> String {
   let n = rand.int(limit=max_parts + 1)
   let sb = StringBuilder()

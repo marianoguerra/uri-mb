@@ -36,7 +36,7 @@ priv enum SegKind {
 
 ///|
 /// Checks whether `s[start..start + 3]` is `"%2E"`, ignoring case.
-fn is_pct2e(s : String, start : Int) -> Bool {
+fn is_pct2e(s : String, start : Int32) -> Bool {
   code_at(s, start) == '%' &&
   code_at(s, start + 1) == '2' &&
   (code_at(s, start + 2) | 0x20) == 'e'
@@ -45,7 +45,7 @@ fn is_pct2e(s : String, start : Int) -> Bool {
 ///|
 /// Classifies the segment `s[start..end]`, treating the percent-encoded forms
 /// of `'.'` as dots.
-fn classify_segment(s : String, start : Int, end : Int) -> SegKind {
+fn classify_segment(s : String, start : Int32, end : Int32) -> SegKind {
   match end - start {
     1 => if code_at(s, start) == '.' { Dot } else { NormalSeg }
     2 =>
@@ -230,7 +230,7 @@ fn resolve_ri(
 pub fn UriRef::resolve_against(
   self : UriRef,
   base : Uri,
-  allow_path_underflow? : Bool = true,
+  allow_path_underflow~ : Bool = true,
 ) -> Uri raise ResolveError {
   uri_of_ri(resolve_ri(base.to_ri(), self.to_ri(), allow_path_underflow))
 }
@@ -241,7 +241,25 @@ pub fn UriRef::resolve_against(
 pub fn IriRef::resolve_against(
   self : IriRef,
   base : Iri,
-  allow_path_underflow? : Bool = true,
+  allow_path_underflow~ : Bool = true,
 ) -> Iri raise ResolveError {
   iri_of_ri(resolve_ri(base.to_ri(), self.to_ri(), allow_path_underflow))
 }
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend ResolveError with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend ResolveError with Debug::{to_repr}
+
+///|
+pub extend ResolveError with Show::{to_string}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend ResolveError with Show::{output}

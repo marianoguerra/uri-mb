@@ -150,3 +150,42 @@ pub let table_idata : Table = table_unreserved.or_pct_encoded().or_ucschar()
 pub impl Encoder for IData with fn table() {
   table_idata
 }
+
+///|
+pub extend Userinfo with Encoder::{table}
+
+///|
+pub extend IUserinfo with Encoder::{table}
+
+///|
+pub extend RegName with Encoder::{table}
+
+///|
+pub extend IRegName with Encoder::{table}
+
+///|
+pub extend Port with Encoder::{table}
+
+///|
+pub extend Path with Encoder::{table}
+
+///|
+pub extend IPath with Encoder::{table}
+
+///|
+pub extend Query with Encoder::{table}
+
+///|
+pub extend IQuery with Encoder::{table}
+
+///|
+pub extend Fragment with Encoder::{table}
+
+///|
+pub extend IFragment with Encoder::{table}
+
+///|
+pub extend Data with Encoder::{table}
+
+///|
+pub extend IData with Encoder::{table}

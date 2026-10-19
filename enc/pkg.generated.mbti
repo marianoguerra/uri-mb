@@ -55,58 +55,70 @@ pub let table_userinfo : Table
 // Types and methods
 pub enum Data {
 }
+pub fn Data::table() -> Table
 pub impl Encoder for Data
 
 pub enum Fragment {
 }
+pub fn Fragment::table() -> Table
 pub impl Encoder for Fragment
 
 pub enum IData {
 }
+pub fn IData::table() -> Table
 pub impl Encoder for IData
 
 pub enum IFragment {
 }
+pub fn IFragment::table() -> Table
 pub impl Encoder for IFragment
 
 pub enum IPath {
 }
+pub fn IPath::table() -> Table
 pub impl Encoder for IPath
 pub impl PathEncoder for IPath
 
 pub enum IQuery {
 }
+pub fn IQuery::table() -> Table
 pub impl Encoder for IQuery
 
 pub enum IRegName {
 }
+pub fn IRegName::table() -> Table
 pub impl Encoder for IRegName
 
 pub enum IUserinfo {
 }
+pub fn IUserinfo::table() -> Table
 pub impl Encoder for IUserinfo
 
 pub enum Path {
 }
+pub fn Path::table() -> Table
 pub impl Encoder for Path
 pub impl PathEncoder for Path
 
 pub enum Port {
 }
+pub fn Port::table() -> Table
 pub impl Encoder for Port
 
 pub enum Query {
 }
+pub fn Query::table() -> Table
 pub impl Encoder for Query
 
 pub enum RegName {
 }
+pub fn RegName::table() -> Table
 pub impl Encoder for RegName
 
 pub struct Table(UInt64, UInt64) derive(Eq)
 pub fn Table::allows(Self, Char) -> Bool
-pub fn Table::allows_ascii(Self, Int) -> Bool
-pub fn Table::allows_code_point(Self, Int) -> Bool
+pub fn Table::allows_ascii(Self, Int32) -> Bool
+pub fn Table::allows_code_point(Self, Int32) -> Bool
 pub fn Table::allows_non_ascii(Self) -> Bool
 pub fn Table::allows_pct_encoded(Self) -> Bool
 pub fn Table::is_subset(Self, Self) -> Bool
@@ -119,6 +131,7 @@ pub fn Table::sub(Self, Self) -> Self
 
 pub enum Userinfo {
 }
+pub fn Userinfo::table() -> Table
 pub impl Encoder for Userinfo
 
 // Type aliases

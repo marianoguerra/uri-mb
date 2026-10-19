@@ -30,7 +30,7 @@ let mask_unencoded_ascii : UInt64 = 0xFFFF_FFFF_FFFF_FFFFUL ^
 
 ///|
 /// `ucschar = %xA0-D7FF / %xF900-FDCF / %xFDF0-FFEF / ...` (RFC 3987)
-fn is_ucschar(x : Int) -> Bool {
+fn is_ucschar(x : Int32) -> Bool {
   (x >= 0xa0 && x <= 0xd7ff) ||
   (x >= 0xf900 && x <= 0xfdcf) ||
   (x >= 0xfdf0 && x <= 0xffef) ||
@@ -40,7 +40,7 @@ fn is_ucschar(x : Int) -> Bool {
 
 ///|
 /// `iprivate = %xE000-F8FF / %xF0000-FFFFD / %x100000-10FFFD` (RFC 3987)
-fn is_iprivate(x : Int) -> Bool {
+fn is_iprivate(x : Int32) -> Bool {
   (x >= 0xe000 && x <= 0xf8ff) || (x >= 0xf0000 && (x & 0xffff) <= 0xfffd)
 }
 
@@ -128,7 +128,7 @@ pub fn Table::is_subset(self : Table, other : Table) -> Bool {
 
 ///|
 /// Checks whether the given ASCII code is allowed unencoded by the table.
-pub fn Table::allows_ascii(self : Table, x : Int) -> Bool {
+pub fn Table::allows_ascii(self : Table, x : Int32) -> Bool {
   if x < 64 {
     (self.0 & mask_unencoded_ascii & (1UL << x)) != 0
   } else if x < 128 {
@@ -146,7 +146,7 @@ pub fn Table::allows_non_ascii(self : Table) -> Bool {
 
 ///|
 /// Checks whether the given code point is allowed unencoded by the table.
-pub fn Table::allows_code_point(self : Table, x : Int) -> Bool {
+pub fn Table::allows_code_point(self : Table, x : Int32) -> Bool {
   if x < 128 {
     self.allows_ascii(x)
   } else if (self.0 & mask_ucschar) != 0 && is_ucschar(x) {
@@ -277,3 +277,8 @@ pub let table_iquery : Table = table_query.or_ucschar().or_iprivate()
 ///|
 /// `ifragment = *( ipchar / "/" / "?" )`
 pub let table_ifragment : Table = table_fragment.or_ucschar()
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend Table with Eq::{not_equal, equal}

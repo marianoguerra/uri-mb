@@ -6,7 +6,7 @@
 pub(all) suberror ConvertError {
   /// The input is not ASCII. The index points to the first non-ASCII code
   /// unit.
-  NotAscii(index~ : Int)
+  NotAscii(index~ : Int32)
   /// The input has no scheme.
   NoScheme
 } derive(Eq, Debug)
@@ -22,7 +22,7 @@ pub impl Show for ConvertError with fn output(self, logger) {
 
 ///|
 /// Returns the index of the first non-ASCII code unit of `s`, if any.
-fn first_non_ascii(s : String) -> Int? {
+fn first_non_ascii(s : String) -> Int32? {
   for i in 0..<s.length() {
     if code_at(s, i) >= 128 {
       return Some(i)
@@ -221,3 +221,21 @@ pub fn Iri::to_uri(self : Iri) -> Uri {
 pub fn IriRef::to_uri_ref(self : IriRef) -> UriRef {
   uri_ref_of_ri(encode_non_ascii(self.to_ri()))
 }
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend ConvertError with Eq::{not_equal, equal}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend ConvertError with Debug::{to_repr}
+
+///|
+pub extend ConvertError with Show::{to_string}
+
+///|
+#deprecated(skip_current_package=true)
+#doc(hidden)
+pub extend ConvertError with Show::{output}
