@@ -190,7 +190,7 @@ pub fn IriRef::compare(Self, Self) -> Int32
 pub fn IriRef::normalize(Self, default_port? : (String) -> Int32?) -> Self
 pub fn IriRef::normalize_strict(Self, default_port? : (String) -> Int32?) -> Self raise NormalizeError
 pub fn IriRef::parse(String) -> Self raise ParseError
-pub fn IriRef::resolve_against(Self, Iri, allow_path_underflow? : Bool) -> Iri raise ResolveError
+pub fn IriRef::resolve_against(Self, Iri, allow_path_underflow? : Bool, preserve_encoded_dot_segments? : Bool) -> Iri raise ResolveError
 pub fn IriRef::strip_fragment(Self) -> Self
 pub fn IriRef::to_string(Self) -> String
 pub fn IriRef::to_uri_ref(Self) -> UriRef
@@ -252,7 +252,7 @@ pub fn UriRef::compare(Self, Self) -> Int32
 pub fn UriRef::normalize(Self, default_port? : (String) -> Int32?) -> Self
 pub fn UriRef::normalize_strict(Self, default_port? : (String) -> Int32?) -> Self raise NormalizeError
 pub fn UriRef::parse(String) -> Self raise ParseError
-pub fn UriRef::resolve_against(Self, Uri, allow_path_underflow? : Bool) -> Uri raise ResolveError
+pub fn UriRef::resolve_against(Self, Uri, allow_path_underflow? : Bool, preserve_encoded_dot_segments? : Bool) -> Uri raise ResolveError
 pub fn UriRef::strip_fragment(Self) -> Self
 pub fn UriRef::to_iri_ref(Self) -> IriRef
 pub fn UriRef::to_string(Self) -> String

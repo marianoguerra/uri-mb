@@ -133,8 +133,45 @@ test "resolve underflow" {
 }
 
 ///|
+test "resolve preserves percent-encoded dot segments on request" {
+  let base = @uri.Uri::parse("https://example.com/releases/latest.json")
+  for
+    (reference, expected) in [
+      (
+        "../signed/%2E/file?token=a%2Fb", "https://example.com/signed/%2E/file?token=a%2Fb",
+      ),
+      (
+        "//cdn.example.com/a/../%2e%2E/file", "https://cdn.example.com/%2e%2E/file",
+      ),
+    ] {
+    let reference = @uri.UriRef::parse(reference)
+    assert_eq(
+      reference.resolve_against(
+        base,
+        allow_path_underflow=false,
+        preserve_encoded_dot_segments=true,
+      ).text,
+      expected,
+    )
+  }
+  let base = @uri.Uri::parse("https://example.com/releases/.%2e")
+  assert_eq(
+    @uri.UriRef::parse("file").resolve_against(
+      base,
+      preserve_encoded_dot_segments=true,
+    ).text,
+    "https://example.com/releases/file",
+  )
+}
+
+///|
 test "resolve iri" {
   let base = @uri.Iri::parse("http://例え.jp/a/b")
   let r = @uri.IriRef::parse("../ç")
   inspect(r.resolve_against(base), content="http://例え.jp/ç")
+  let r = @uri.IriRef::parse("../%2e./ç")
+  assert_eq(
+    r.resolve_against(base, preserve_encoded_dot_segments=true).text,
+    "http://例え.jp/%2e./ç",
+  )
 }

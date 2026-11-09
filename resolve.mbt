@@ -43,9 +43,13 @@ fn is_pct2e(s : String, start : Int32) -> Bool {
 }
 
 ///|
-/// Classifies the segment `s[start..end]`, treating the percent-encoded forms
-/// of `'.'` as dots.
-fn classify_segment(s : String, start : Int32, end : Int32) -> SegKind {
+/// Classifies the segment `s[start..end]` according to the dot-segment policy.
+fn classify_segment(
+  s : String,
+  start : Int32,
+  end : Int32,
+  preserve_encoded_dot_segments : Bool,
+) -> SegKind {
   match end - start {
     1 => if code_at(s, start) == '.' { Dot } else { NormalSeg }
     2 =>
@@ -54,6 +58,7 @@ fn classify_segment(s : String, start : Int32, end : Int32) -> SegKind {
       } else {
         NormalSeg
       }
+    _ if preserve_encoded_dot_segments => NormalSeg
     3 => if is_pct2e(s, start) { Dot } else { NormalSeg }
     4 =>
       if (code_at(s, start) == '.' && is_pct2e(s, start + 1)) ||
@@ -78,7 +83,11 @@ fn classify_segment(s : String, start : Int32, end : Int32) -> SegKind {
 ///
 /// Returns the resulting path and whether an underflow occurred, i.e., whether
 /// a `".."` segment tried to escape the root.
-fn remove_dot_segments(abs : String, rel : String?) -> (String, Bool) {
+fn remove_dot_segments(
+  abs : String,
+  rel : String?,
+  preserve_encoded_dot_segments~ : Bool = false,
+) -> (String, Bool) {
   // Each piece is a nonempty segment together with the `'/'` that follows it,
   // if any. Only the last piece may lack a trailing `'/'`, and the first piece
   // is always `"/"`, so popping a piece is exactly truncating the path to the
@@ -97,7 +106,7 @@ fn remove_dot_segments(abs : String, rel : String?) -> (String, Bool) {
       while end < len && code_at(part, end) != '/' {
         end += 1
       }
-      match classify_segment(part, start, end) {
+      match classify_segment(part, start, end, preserve_encoded_dot_segments) {
         Dot => ()
         DoubleDot =>
           if pieces.length() <= 1 {
@@ -131,6 +140,7 @@ fn resolve_ri(
   base : Ri,
   r : Ri,
   allow_path_underflow : Bool,
+  preserve_encoded_dot_segments : Bool,
 ) -> Ri raise ResolveError {
   if base.fragment is Some(_) {
     raise BaseWithFragment
@@ -168,7 +178,12 @@ fn resolve_ri(
     // does not change the result.
     let last_slash_idx = base_path.rev_find("/").unwrap()
     let base_path_stripped = match
-      classify_segment(base_path, last_slash_idx + 1, base_path.length()) {
+      classify_segment(
+        base_path,
+        last_slash_idx + 1,
+        base_path.length(),
+        preserve_encoded_dot_segments,
+      ) {
       DoubleDot => base_path
       _ => slice(base_path, 0, last_slash_idx + 1)
     }
@@ -176,7 +191,11 @@ fn resolve_ri(
     (base.scheme, base.authority, base_path_stripped, Some(r.path), r.query)
   }
   let path = if t_path_abs.has_prefix("/") {
-    let (path, underflow) = remove_dot_segments(t_path_abs, t_path_rel)
+    let (path, underflow) = remove_dot_segments(
+      t_path_abs,
+      t_path_rel,
+      preserve_encoded_dot_segments~,
+    )
     if underflow && !allow_path_underflow {
       raise PathUnderflow
     }
@@ -209,6 +228,9 @@ fn resolve_ri(
 ///
 /// Setting `allow_path_underflow` to `false` deviates from RFC 3986 by
 /// rejecting references whose `".."` segments escape the root of the base.
+/// By default, resolution follows `fluent-uri` and treats percent-encoded
+/// dots as dot segments. Set `preserve_encoded_dot_segments=true` to keep
+/// encoded segments as path data and remove only literal `.` and `..`.
 ///
 /// ```mbt check
 /// test {
@@ -231,8 +253,16 @@ pub fn UriRef::resolve_against(
   self : UriRef,
   base : Uri,
   allow_path_underflow~ : Bool = true,
+  preserve_encoded_dot_segments~ : Bool = false,
 ) -> Uri raise ResolveError {
-  uri_of_ri(resolve_ri(base.to_ri(), self.to_ri(), allow_path_underflow))
+  uri_of_ri(
+    resolve_ri(
+      base.to_ri(),
+      self.to_ri(),
+      allow_path_underflow,
+      preserve_encoded_dot_segments,
+    ),
+  )
 }
 
 ///|
@@ -242,8 +272,16 @@ pub fn IriRef::resolve_against(
   self : IriRef,
   base : Iri,
   allow_path_underflow~ : Bool = true,
+  preserve_encoded_dot_segments~ : Bool = false,
 ) -> Iri raise ResolveError {
-  iri_of_ri(resolve_ri(base.to_ri(), self.to_ri(), allow_path_underflow))
+  iri_of_ri(
+    resolve_ri(
+      base.to_ri(),
+      self.to_ri(),
+      allow_path_underflow,
+      preserve_encoded_dot_segments,
+    ),
+  )
 }
 
 ///|

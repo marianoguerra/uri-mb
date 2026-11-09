@@ -218,6 +218,11 @@ test "resolution underflow" {
 }
 ```
 
+By default, resolution follows `fluent-uri` and treats percent-encoded dots as
+dot segments. Pass `preserve_encoded_dot_segments=true` to preserve segments
+such as `%2E` and `%2e%2e` while still removing literal `.` and `..`. This is
+useful when a resolved request must retain the original percent encoding.
+
 ## Normalization
 
 Normalization lowercases the scheme and the host, decodes percent-encoded
